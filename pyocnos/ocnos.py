@@ -8,6 +8,7 @@ from time import sleep
 import lxml
 from future.utils import raise_from
 from ncclient import NCClientError
+from ncclient.operations import Commit
 from ncclient import manager
 
 from pyocnos.diff.xml_diff import XmlDiff
@@ -189,12 +190,7 @@ class OCNOS(object):
         self._connection.discard_changes()
         with self._connection.locked(target='candidate'):
             try:
-                self._connection.edit_config(
-                    target='candidate',
-                    config=self._candidate_config,
-                    test_option='test-then-set',
-                    default_operation='merge'
-                )
+                Commit(self._connection, timeout=10)
             except NCClientError as ncclient_exception:
                 self.log.error('error', exc_info=True)
                 raise_from(
