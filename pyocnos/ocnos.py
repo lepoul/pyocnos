@@ -193,7 +193,7 @@ class OCNOS(object):
                     target='candidate',
                     config=self._candidate_config,
                     test_option='test-then-set',
-                    default_operation='replace'
+                    default_operation='merge'
                 )
             except NCClientError as ncclient_exception:
                 self.log.error('error', exc_info=True)
